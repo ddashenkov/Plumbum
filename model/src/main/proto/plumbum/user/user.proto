@@ -13,10 +13,10 @@ option java_generate_equals_and_hash = true;
 import "spine/people/person_name.proto";
 
 message User {
-    UserId id = 1 [(required) = true, (valid) = true];
-    spine.people.PersonName name = 2 [(required) = true, (valid) = true];
+    UserId id = 1 [(required) = true];
+    spine.people.PersonName name = 2 [(required) = true];
 }
 
 message UserId {
-    int64 uid = 1 [(required) = true, (valid) = true];
+    int64 uid = 1 [(required) = true];
 }
