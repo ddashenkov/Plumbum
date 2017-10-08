@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package plumbum.record;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.plumbum.edu";
+option java_package = "edu.ddashenkov.plumbum.record";
+option java_outer_classname = "RecordCommandsProto";
+option java_multiple_files = true;
+option java_generate_equals_and_hash = true;
+
+import "plumbum/user/user.proto";
+import "plumbum/record/record.proto";
+
+message RecordCreated {
+
+    record.RecordId id = 1 [(required) = true, (valid) = true];
+
+    user.UserId user_id = 2 [(required) = true, (valid) = true];
+
+    string display_name = 3;
+}
+
+message TextAppended {
+
+    record.RecordId id = 1  [(required) = true, (valid) = true];
+
+    repeated record.Point new_points = 2 [(required) = true];
+}
+
+message RecordNameChanged {
+
+    record.RecordId id = 1 [(required) = true, (valid) = true];
+
+    string new_name = 2 [(required) = true];
+}
