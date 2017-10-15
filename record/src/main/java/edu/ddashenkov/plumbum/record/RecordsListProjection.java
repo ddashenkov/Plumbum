@@ -1,7 +1,7 @@
 package edu.ddashenkov.plumbum.record;
 
 import edu.ddashenkov.plumbum.user.UserCreated;
-import edu.ddashenkov.plumbum.user.UserId;
+import io.spine.core.UserId;
 import io.spine.server.aggregate.Apply;
 import io.spine.server.projection.Projection;
 

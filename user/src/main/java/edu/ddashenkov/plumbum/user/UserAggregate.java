@@ -1,5 +1,6 @@
 package edu.ddashenkov.plumbum.user;
 
+import io.spine.core.UserId;
 import io.spine.server.aggregate.Aggregate;
 import io.spine.server.aggregate.Apply;
 import io.spine.server.command.Assign;

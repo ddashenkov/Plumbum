@@ -11,14 +11,15 @@ option java_multiple_files = true;
 option java_generate_equals_and_hash = true;
 
 import "spine/people/person_name.proto";
-import "plumbum/user/user.proto";
+import "spine/core/user_id.proto";
 
 message CreateUser {
-    user.UserId user_id = 1 [(required) = true];
+    spine.core.UserId user_id = 1 [(required) = true];
     spine.people.PersonName name = 2;
+    string password = 3;
 }
 
 message ChangeUserName {
-    user.UserId user_id = 1 [(required) = true];
+    spine.core.UserId user_id = 1 [(required) = true];
     spine.people.PersonName name = 2 [(required) = true];
 }

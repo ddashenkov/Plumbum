@@ -10,7 +10,7 @@ option java_outer_classname = "RecordProto";
 option java_multiple_files = true;
 option java_generate_equals_and_hash = true;
 
-import "plumbum/user/user.proto";
+import "spine/core/user_id.proto";
 
 message RecordId {
     int64 uid = 1 [(required) = true];
@@ -25,7 +25,7 @@ message Record {
 
     RecordId id = 1 [(required) = true, (valid) = true];
 
-    user.UserId user_id = 2;
+    spine.core.UserId user_id = 2;
 
     string display_name = 3;
 
@@ -34,7 +34,7 @@ message Record {
 
 message RecordList {
 
-    user.UserId user_id = 1 [(required) = true, (valid) = true];
+    spine.core.UserId user_id = 1 [(required) = true, (valid) = true];
 
     repeated Record records = 2;
 }
