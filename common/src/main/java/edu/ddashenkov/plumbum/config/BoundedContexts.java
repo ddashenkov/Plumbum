@@ -14,7 +14,7 @@ public final class BoundedContexts {
         // Prevent utility class instantiation.
     }
 
-    public static BoundedContext newBoundeContext(String name, Repository<?, ?>... repositories) {
+    public static BoundedContext newBoundedContext(String name, Repository<?, ?>... repositories) {
         checkNotNull(name);
         checkNotNull(repositories);
         final BoundedContext bc = BoundedContext.newBuilder()

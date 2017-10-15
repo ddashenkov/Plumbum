@@ -19,7 +19,7 @@ final class MySqlConfig {
 
     static {
         final Properties dbConfig = new Properties();
-        try (InputStream in = MySqlConfig.class.getResourceAsStream("config/db.properties")) {
+        try (InputStream in = MySqlConfig.class.getClassLoader().getResourceAsStream("config/db.properties")) {
             checkNotNull(in, "Could not read configuration file `config/db.properties` from classpath.");
             dbConfig.load(in);
         } catch (IOException e) {
