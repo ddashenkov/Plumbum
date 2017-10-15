@@ -1,3 +1,5 @@
 rootProject.name = 'plumbum'
-include 'model'
+include 'common'
+include 'user'
+include 'record'
 
