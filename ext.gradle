@@ -1,5 +1,5 @@
 ext {
-    spineVersion = "0.9.72-SNAPSHOT"
+    spineVersion = "0.9.76-SNAPSHOT"
     spineToolsVersion = "0.9.41-SNAPSHOT"
     spineBaseVersion = '0.9.55-SNAPSHOT'
     protobufGradlePluginVersion = '0.8.3'

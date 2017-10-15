@@ -72,5 +72,17 @@ allprojects {
 
     protobuf {
         generatedFilesBaseDir = "$projectDir/generated"
+        generateProtoTasks {
+            all().each { task ->
+                task.generateDescriptorSet = true
+                final def descPath = (task.sourceSet.name.contains("test")
+                        ? project.extensions.getByName("modelCompiler").testDescriptorSetPath
+                        : project.extensions.getByName("modelCompiler").mainDescriptorSetPath) ?:
+                        "${projectDir}/build/descriptors/${task.sourceSet.name}.desc"
+                task.descriptorSetOptions.path = descPath
+                task.descriptorSetOptions.includeImports = true
+                task.descriptorSetOptions.includeSourceInfo = true
+            }
+        }
     }
 }
