@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package plumbum.user;
+
+import "spine/options.proto";
+
+option (type_url_prefix) = "type.plumbum.edu";
+option java_package = "edu.ddashenkov.plumbum.user";
+option java_outer_classname = "UserEventsProto";
+option java_multiple_files = true;
+option java_generate_equals_and_hash = true;
+
+import "spine/people/person_name.proto";
+import "plumbum/user/user.proto";
+
+message UserCreated {
+    user.UserId user_id = 1 [(required) = true];
+    spine.people.PersonName name = 2;
+}
+
+message UserNameChanged {
+    user.UserId user_id = 1 [(required) = true];
+    spine.people.PersonName name = 2 [(required) = true];
+}

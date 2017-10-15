@@ -1,0 +1,4 @@
+dependencies {
+    compile group: "io.spine", name: "spine-base", version: spineBaseVersion
+    compile group: "io.spine", name: "spine-users-core", version: '0.9.67-SNAPSHOT'
+}

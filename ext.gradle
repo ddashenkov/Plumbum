@@ -1,8 +1,8 @@
 ext {
     spineVersion = "0.9.72-SNAPSHOT"
     spineToolsVersion = "0.9.41-SNAPSHOT"
+    spineBaseVersion = '0.9.55-SNAPSHOT'
     protobufGradlePluginVersion = '0.8.3'
     spineRepository = 'http://maven.teamdev.com/repository/spine'
     spineSnapshotsRepository = 'http://maven.teamdev.com/repository/spine-snapshots'
-
 }
