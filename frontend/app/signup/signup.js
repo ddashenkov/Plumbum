@@ -9,6 +9,6 @@ app.config(['$routeProvider', function ($routeProvider) {
     });
 }]);
 
-app.controller('SignUpCtrl', ['$scope', function ($scope) {
+app.controller('SignUpCtrl', function ($scope) {
 
-}]);
+});

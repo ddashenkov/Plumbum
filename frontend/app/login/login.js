@@ -9,5 +9,5 @@ angular.module('myApp.login', ['ngRoute'])
   });
 }])
 
-.controller('loginCtrl', [function() {
-}]);
+.controller('loginCtrl', function($scope) {
+});
