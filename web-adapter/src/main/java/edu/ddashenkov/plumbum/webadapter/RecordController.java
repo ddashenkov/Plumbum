@@ -1,23 +1,20 @@
 package edu.ddashenkov.plumbum.webadapter;
 
+import edu.ddashenkov.plumbum.client.Channels;
 import edu.ddashenkov.plumbum.client.PlumbumClient;
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
-import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
 import io.spine.core.UserId;
 import spark.Request;
 
+import static edu.ddashenkov.plumbum.client.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
 import static spark.Spark.get;
 
 final class RecordController implements Controller {
 
     private static final String ID_PARAM = ":id";
-
-    private final Channel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                                                         .build();
 
     private RecordController() {
         // Prevent direct instantiation.
@@ -47,7 +44,7 @@ final class RecordController implements Controller {
         final UserId user = UserId.newBuilder()
                                   .setValue(userId)
                                   .build();
-        return PlumbumClient.instance(channel, user);
+        return instance(Channels.getDefault(), user);
     }
 
     private static RecordId recordId(long value) {

@@ -1,9 +1,8 @@
 package edu.ddashenkov.plumbum.webadapter;
 
 import edu.ddashenkov.plumbum.client.AnonymousClient;
+import edu.ddashenkov.plumbum.client.Channels;
 import edu.ddashenkov.plumbum.user.CreateUser;
-import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
 import io.spine.Identifier;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
@@ -15,10 +14,7 @@ import static spark.Spark.get;
 
 final class LoginController implements Controller {
 
-    private final Channel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                                                         .build();
-
-    private final AnonymousClient client = AnonymousClient.instance(channel);
+    private final AnonymousClient client = AnonymousClient.instance(Channels.getDefault());
 
     private LoginController() {
         // Prevent direct instantiation.
