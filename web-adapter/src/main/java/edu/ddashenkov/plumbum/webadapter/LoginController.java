@@ -1,26 +1,36 @@
 package edu.ddashenkov.plumbum.webadapter;
 
-import edu.ddashenkov.plumbum.client.PlumbumClient;
+import edu.ddashenkov.plumbum.client.AnonymousClient;
 import edu.ddashenkov.plumbum.user.CreateUser;
+import io.grpc.Channel;
+import io.grpc.ManagedChannelBuilder;
 import io.spine.Identifier;
+import io.spine.core.Ack;
 import io.spine.core.UserId;
 import io.spine.people.PersonName;
 import spark.Request;
 
+import static com.google.common.base.Preconditions.checkState;
+import static io.spine.core.Status.StatusCase.OK;
 import static spark.Spark.get;
 
-/**
- * @author Dmytro Dashenkov
- */
-public class LoginController {
+final class LoginController implements Controller {
 
-    private static final PlumbumClient client = PlumbumClient.anonymous("localhost", 50051);
+    private final Channel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
+                                                         .build();
 
-    public static void main(String[] args) {
-        listenSignUp();
+    private final AnonymousClient client = AnonymousClient.instance(channel);
+
+    private LoginController() {
+        // Prevent direct instantiation.
     }
 
-    private static void listenSignUp() {
+    static Controller create() {
+        return new LoginController();
+    }
+
+    @Override
+    public void serve() {
         get("/signup", (request, response) -> {
             final UserId userId = newUser();
             final String name = Header.USERNAME.get(request);
@@ -30,7 +40,8 @@ public class LoginController {
                                                  .setPassword(password)
                                                  .setName(name(name))
                                                  .build();
-            client.createUser(command);
+            final Ack ack = client.createUser(command);
+            checkState(ack.getStatus().getStatusCase() == OK);
             return userId.getValue();
         });
 
@@ -52,8 +63,7 @@ public class LoginController {
     private enum Header {
 
         PASSWORD("password"),
-        USERNAME("name"),
-        TIMEZONE("tzone");
+        USERNAME("name");
 
         private String name;
 
