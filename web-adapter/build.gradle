@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile project(path: ':common')
+    compile project(path: ':client')
     compile "com.sparkjava:spark-core:2.6.0"
     compile "io.spine:spine-client:$spineVersion"
 
