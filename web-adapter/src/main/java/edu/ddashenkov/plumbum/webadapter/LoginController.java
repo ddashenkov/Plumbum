@@ -8,7 +8,6 @@ import io.spine.Identifier;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
 import io.spine.people.PersonName;
-import spark.Request;
 
 import static com.google.common.base.Preconditions.checkState;
 import static io.spine.core.Status.StatusCase.OK;
@@ -58,21 +57,5 @@ final class LoginController implements Controller {
         return PersonName.newBuilder()
                          .setGivenName(name)
                          .build();
-    }
-
-    private enum Header {
-
-        PASSWORD("password"),
-        USERNAME("name");
-
-        private String name;
-
-        Header(String name) {
-            this.name = name;
-        }
-
-        private String get(Request request) {
-            return request.headers(name);
-        }
     }
 }
