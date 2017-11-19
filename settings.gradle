@@ -4,4 +4,5 @@ include 'user'
 include 'record'
 include 'web-adapter'
 include 'client'
+include 'deployment'
 
