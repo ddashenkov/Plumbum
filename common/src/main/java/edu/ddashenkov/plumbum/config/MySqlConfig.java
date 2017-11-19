@@ -10,9 +10,6 @@ import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @author Dmytro Dashenkov
- */
 final class MySqlConfig {
 
     private static MysqlDataSource dataSource;

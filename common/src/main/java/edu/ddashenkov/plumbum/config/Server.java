@@ -6,11 +6,9 @@ import io.spine.server.QueryService;
 import io.spine.server.SubscriptionService;
 import io.spine.server.transport.GrpcContainer;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 
 /**
@@ -20,7 +18,7 @@ public final class Server {
 
     private final int port;
     private final List<BoundedContext> boundedContexts;
-    @Nullable
+
     private GrpcContainer container;
 
     public Server(int port, BoundedContext... boundedContexts) {
@@ -35,12 +33,9 @@ public final class Server {
             container.awaitTermination();
         } catch (IOException e) {
             throw new IllegalStateException(e);
+        } finally {
+            container.shutdown();
         }
-    }
-
-    public void shutDown() {
-        checkNotNull(container);
-        container.shutdown();
     }
 
     private GrpcContainer prepareContainer() {
