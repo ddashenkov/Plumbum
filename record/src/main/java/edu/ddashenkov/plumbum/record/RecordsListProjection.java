@@ -1,10 +1,8 @@
 package edu.ddashenkov.plumbum.record;
 
-import com.google.protobuf.Empty;
 import edu.ddashenkov.plumbum.user.UserCreated;
-import io.spine.core.React;
+import io.spine.core.Subscribe;
 import io.spine.core.UserId;
-import io.spine.server.aggregate.Apply;
 import io.spine.server.entity.storage.Column;
 import io.spine.server.projection.Projection;
 
@@ -25,14 +23,13 @@ public class RecordsListProjection extends Projection<UserId, RecordList, Record
         return getState().getUserId();
     }
 
-    @React(external = true)
-    private Empty on(UserCreated event) {
+    @Subscribe(external = true)
+    public void on(UserCreated event) {
         getBuilder().setUserId(event.getUserId());
-        return Empty.getDefaultInstance();
     }
 
-    @Apply
-    private void on(RecordCreated event) {
+    @Subscribe
+    public void on(RecordCreated event) {
         final Record record = Record.newBuilder()
                                     .setId(event.getId())
                                     .setDisplayName(event.getDisplayName())
@@ -40,8 +37,8 @@ public class RecordsListProjection extends Projection<UserId, RecordList, Record
         getBuilder().addRecords(record);
     }
 
-    @Apply
-    private void on(RecordNameChanged event) {
+    @Subscribe
+    public void on(RecordNameChanged event) {
         int index = 0;
         final List<Record> list = getState().getRecordsList();
         for (Record record : list) {

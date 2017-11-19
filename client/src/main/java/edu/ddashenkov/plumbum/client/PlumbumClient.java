@@ -54,6 +54,6 @@ public final class PlumbumClient extends AbstractClient {
                                             .select(RecordList.class)
                                             .where(eq("owner", requestFactory().getActor()))
                                             .build();
-        return read(query);
+        return read(query, RecordList.getDefaultInstance());
     }
 }

@@ -7,6 +7,8 @@ import io.spine.Identifier;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
 import io.spine.people.PersonName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkState;
 import static io.spine.core.Status.StatusCase.OK;
@@ -30,6 +32,7 @@ final class LoginController implements Controller {
             final UserId userId = newUser();
             final String name = Header.USERNAME.get(request);
             final String password = Header.PASSWORD.get(request);
+            log().info("Sign up User {} (password: {}). Assigned ID {}.", name, password, userId);
             final CreateUser command = CreateUser.newBuilder()
                                                  .setUserId(userId)
                                                  .setPassword(password)
@@ -37,10 +40,16 @@ final class LoginController implements Controller {
                                                  .build();
             final Ack ack = client.createUser(command);
             checkState(ack.getStatus().getStatusCase() == OK);
-            return userId.getValue();
+            Cookie.USER_ID.set(response, userId.getValue());
+            response.redirect("/login");
+            return userId;
         });
-
-        get("/login", (request, response) -> null);
+        get("/login", (request, response) -> {
+            final String userId = Cookie.USER_ID.get(request);
+            log().info("Log in User {}", userId);
+            Cookie.USER_ID.set(response, userId);
+            return userId;
+        });
     }
 
     private static UserId newUser() {
@@ -53,5 +62,15 @@ final class LoginController implements Controller {
         return PersonName.newBuilder()
                          .setGivenName(name)
                          .build();
+    }
+
+    private static Logger log() {
+        return LogSingleton.INSTANCE.value;
+    }
+
+    private enum LogSingleton {
+        INSTANCE;
+        @SuppressWarnings("NonSerializableFieldInSerializableClass")
+        private final Logger value = LoggerFactory.getLogger(LoginController.class);
     }
 }

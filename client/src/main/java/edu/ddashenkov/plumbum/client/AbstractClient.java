@@ -14,6 +14,7 @@ import io.spine.core.Command;
 import io.spine.core.UserId;
 import io.spine.protobuf.AnyPacker;
 
+import static io.spine.protobuf.Messages.newInstance;
 import static java.util.Collections.singleton;
 
 abstract class AbstractClient {
@@ -40,16 +41,16 @@ abstract class AbstractClient {
     <M extends Message> M read(Class<M> type, Message id) {
         final Query query = requestFactory.query()
                                           .byIds(type, singleton(id));
-        return read(query);
+        return read(query, newInstance(type));
     }
 
-    <M extends Message> M read(Query query) {
+    <M extends Message> M read(Query query, M defaultInstance) {
         final QueryResponse response = queryService.read(query);
         final M result = response.getMessagesList()
                                  .stream()
                                  .map(AnyPacker::<M>unpack)
                                  .findAny()
-                                 .orElseThrow(() -> new IllegalArgumentException(query.toString()));
+                                 .orElse(defaultInstance);
         return result;
     }
 

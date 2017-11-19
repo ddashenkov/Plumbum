@@ -6,8 +6,8 @@ import io.grpc.ManagedChannelBuilder;
 public final class Channels {
 
     private static final Channel LOCALHOST_CHANNEL = ManagedChannelBuilder.forAddress("localhost", 50051)
+                                                                          .usePlaintext(true)
                                                                           .build();
-
     private Channels() {
         // Prevent utility class instantiation.
     }
