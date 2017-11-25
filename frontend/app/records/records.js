@@ -9,16 +9,9 @@ app.config(['$routeProvider', function ($routeProvider) {
     });
 }]);
 
-app.controller('RecordsController', function ($scope) {
-
-    $scope.recordsList = [
-        {
-            title: "First Record",
-            timestamp: "21-10-2017"
-        },
-        {
-            title: "Second Record",
-            timestamp: "25-10-2017"
-        }
-    ];
+app.controller('RecordsController', function ($scope, $httpBackend, BACKEND_DOMAIN) {
+    $httpBackend.get(BACKEND_DOMAIN + "/records").then(function (response) {
+        console.log(response.toString());
+        $scope.recordsList = response.records;
+    });
 });

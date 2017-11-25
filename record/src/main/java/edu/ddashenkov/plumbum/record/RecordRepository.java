@@ -6,4 +6,8 @@ import io.spine.server.aggregate.AggregateRepository;
  * @author Dmytro Dashenkov
  */
 public class RecordRepository extends AggregateRepository<RecordId, RecordAggregate> {
+
+    public RecordRepository() {
+        super();
+    }
 }

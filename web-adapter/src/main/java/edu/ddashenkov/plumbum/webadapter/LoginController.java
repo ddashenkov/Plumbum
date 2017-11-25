@@ -43,13 +43,13 @@ final class LoginController implements Controller {
             Cookie.USER_ID.set(response, userId.getValue());
             response.redirect("/login");
             return userId;
-        });
+        }, toJson());
         get("/login", (request, response) -> {
             final String userId = Cookie.USER_ID.get(request);
             log().info("Log in User {}", userId);
             Cookie.USER_ID.set(response, userId);
             return userId;
-        });
+        }, toJson());
     }
 
     private static UserId newUser() {
