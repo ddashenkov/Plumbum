@@ -13,6 +13,6 @@ interface Controller {
     void serve();
 
     default ResponseTransformer toJson() {
-        return object -> toCompactJson(toMessage(object));
+        return object -> object == null ? "null" : toCompactJson(toMessage(object));
     }
 }

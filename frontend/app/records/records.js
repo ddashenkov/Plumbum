@@ -4,7 +4,7 @@ var app = angular.module('myApp.records', ['ngRoute']);
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/records', {
-        templateUrl: 'records/records.html',
+        templateUrl: 'records/record.html',
         controller: 'RecordsController'
     });
 }]);

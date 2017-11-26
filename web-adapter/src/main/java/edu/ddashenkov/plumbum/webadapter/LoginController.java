@@ -30,8 +30,8 @@ final class LoginController implements Controller {
     public void serve() {
         get("/signup", (request, response) -> {
             final UserId userId = newUser();
-            final String name = Header.USERNAME.get(request);
-            final String password = Header.PASSWORD.get(request);
+            final String name = Cookie.USERNAME.get(request);
+            final String password = Cookie.PASSWORD.get(request);
             log().info("Sign up User {} (password: {}). Assigned ID {}.", name, password, userId);
             final CreateUser command = CreateUser.newBuilder()
                                                  .setUserId(userId)
@@ -41,7 +41,6 @@ final class LoginController implements Controller {
             final Ack ack = client.createUser(command);
             checkState(ack.getStatus().getStatusCase() == OK);
             Cookie.USER_ID.set(response, userId.getValue());
-            response.redirect("/login");
             return userId;
         }, toJson());
         get("/login", (request, response) -> {

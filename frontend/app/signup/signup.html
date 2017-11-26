@@ -1,8 +1,8 @@
 <div>
     <h4>Sign Up</h4>
     <div>
-        <input id="email-login" type="email">
-        <input id="password" type="password">
-        <a href="#" class="btn">Sign Up</a>
+        <input id="name" ng-model="credentials.name">
+        <input id="password" type="password" ng-model="credentials.password">
+        <button ng-click="trySignUp()">Login</button>
     </div>
 </div>

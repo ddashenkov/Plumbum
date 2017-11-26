@@ -7,7 +7,9 @@ import spark.Response;
  * @author Dmytro Dashenkov
  */
 enum Cookie implements RequestProperty {
-    USER_ID("userId");
+    USER_ID("userId"),
+    USERNAME("name"),
+    PASSWORD("password");
 
     private final String name;
 
