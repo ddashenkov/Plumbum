@@ -3,7 +3,6 @@ package edu.ddashenkov.plumbum.record;
 import edu.ddashenkov.plumbum.user.UserCreated;
 import io.spine.core.Subscribe;
 import io.spine.core.UserId;
-import io.spine.server.entity.storage.Column;
 import io.spine.server.projection.Projection;
 
 import java.util.List;
@@ -18,11 +17,6 @@ public class RecordsListProjection extends Projection<UserId, RecordList, Record
         super(id);
     }
 
-    @Column
-    public UserId getOwner() {
-        return getState().getUserId();
-    }
-
     @Subscribe(external = true)
     public void on(UserCreated event) {
         getBuilder().setUserId(event.getUserId());
@@ -32,9 +26,11 @@ public class RecordsListProjection extends Projection<UserId, RecordList, Record
     public void on(RecordCreated event) {
         final Record record = Record.newBuilder()
                                     .setId(event.getId())
+                                    .setUserId(event.getUserId())
                                     .setDisplayName(event.getDisplayName())
                                     .build();
-        getBuilder().addRecords(record);
+        getBuilder().setUserId(event.getUserId())
+                    .addRecords(record);
     }
 
     @Subscribe

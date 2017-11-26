@@ -13,7 +13,9 @@ import io.spine.client.Query;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
 
-import static io.spine.client.ColumnFilters.eq;
+import java.util.Set;
+
+import static java.util.Collections.singleton;
 
 public final class PlumbumClient extends AbstractClient {
 
@@ -50,10 +52,9 @@ public final class PlumbumClient extends AbstractClient {
     }
 
     public RecordList getMyRecords() {
+        final Set<UserId> ids = singleton(requestFactory().getActor());
         final Query query = requestFactory().query()
-                                            .select(RecordList.class)
-                                            .where(eq("owner", requestFactory().getActor()))
-                                            .build();
+                                            .byIds(RecordList.class, ids);
         return read(query, RecordList.getDefaultInstance());
     }
 }

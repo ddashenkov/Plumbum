@@ -9,5 +9,15 @@ angular.module('myApp.login', ['ngRoute'])
   });
 }])
 
-.controller('loginCtrl', function($scope) {
+.controller('loginCtrl', function($scope, $http, BACKEND_DOMAIN, $window) {
+    $scope.credentials = {
+        name: '',
+        password: ''
+    };
+
+    $scope.tryLogin = function() {
+        $http.get(BACKEND_DOMAIN + '/login').then(function() {
+            $window.location.href = '#!/records';
+        });
+    }
 });

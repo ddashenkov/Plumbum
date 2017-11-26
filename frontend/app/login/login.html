@@ -1,6 +1,6 @@
 <h4>Login</h4>
 <div>
-    <input id="email-login" type="email">
-    <input id="password" type="password">
-    <a href="#" class="btn">Login</a>
+    <input id="login" ng-model="credentials.name">
+    <input id="password" type="password" ng-model="credentials.password">
+    <button ng-click="tryLogin()">Login</button>
 </div>

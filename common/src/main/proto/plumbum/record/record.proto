@@ -23,7 +23,7 @@ message Point {
 
 message Record {
 
-    RecordId id = 1 [(required) = true, (valid) = true];
+    RecordId id = 1 [(required) = true];
 
     spine.core.UserId user_id = 2;
 
@@ -34,7 +34,7 @@ message Record {
 
 message RecordList {
 
-    spine.core.UserId user_id = 1 [(required) = true, (valid) = true];
+    spine.core.UserId user_id = 1 [(required) = true];
 
     repeated Record records = 2;
 }

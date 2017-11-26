@@ -30,13 +30,13 @@ final class RecordController implements Controller {
             final PlumbumClient client = client(request);
             final RecordList records = client.getMyRecords();
             return records;
-        });
+        }, toJson());
         get("/record/" + ID_PARAM, (request, response) -> {
             final PlumbumClient client = client(request);
             final long recordId = parseLong(request.params(ID_PARAM));
             final Record record = client.getRecord(recordId(recordId));
             return record;
-        });
+        }, toJson());
     }
 
     private PlumbumClient client(Request request) {
