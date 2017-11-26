@@ -6,7 +6,8 @@ angular.module('myApp', [
     'myApp.login',
     'myApp.signup',
     'myApp.version',
-    'myApp.records'
+    'myApp.records',
+    'myApp.record'
 ]).config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
     $locationProvider.hashPrefix('!');
     $httpProvider.defaults.withCredentials = true;
