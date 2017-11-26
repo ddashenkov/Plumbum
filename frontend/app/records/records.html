@@ -1,10 +1,12 @@
 <div>
     <ul ng-controller="RecordsController">
         <li ng-repeat="record in recordsList">
-            <div>
-                <h4>{{ record.displayName }}</h4>
-                <p>{{ record.timestamp }}</p>
-            </div>
+            <a href="#!/record/{{record.id.uid}}">
+                <div>
+                    <h4>{{ record.displayName }}</h4>
+                    <p>{{ record.timestamp }}</p>
+                </div>
+            </a>
         </li>
     </ul>
 </div>
