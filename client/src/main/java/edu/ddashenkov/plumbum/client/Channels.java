@@ -18,6 +18,7 @@ public final class Channels {
 
     public static Channel forHostPort(String host, int port) {
         return ManagedChannelBuilder.forAddress(host, port)
+                                    .usePlaintext(true)
                                     .build();
     }
 

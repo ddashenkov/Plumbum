@@ -44,7 +44,11 @@ final class LoginController implements Controller {
             return userId;
         }, toJson());
         get("/login", (request, response) -> {
-            final String userId = Cookie.USER_ID.get(request);
+            final String name = Cookie.USERNAME.get(request);
+            final String password = Cookie.PASSWORD.get(request);
+            final String userId = client.checkUser(name, password)
+                                        .map(UserId::getValue)
+                                        .orElse("");
             log().info("Log in User {}", userId);
             Cookie.USER_ID.set(response, userId);
             return userId;

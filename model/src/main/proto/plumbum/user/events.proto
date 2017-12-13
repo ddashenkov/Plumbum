@@ -16,6 +16,7 @@ import "spine/core/user_id.proto";
 message UserCreated {
     spine.core.UserId user_id = 1 [(required) = true];
     spine.people.PersonName name = 2;
+    string password = 3;
 }
 
 message UserNameChanged {
