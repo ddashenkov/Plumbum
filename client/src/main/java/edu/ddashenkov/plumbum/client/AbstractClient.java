@@ -14,8 +14,11 @@ import io.spine.core.Command;
 import io.spine.core.UserId;
 import io.spine.protobuf.AnyPacker;
 
+import java.util.Collection;
+
 import static io.spine.protobuf.Messages.newInstance;
 import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toList;
 
 abstract class AbstractClient {
 
@@ -45,12 +48,17 @@ abstract class AbstractClient {
     }
 
     <M extends Message> M read(Query query, M defaultInstance) {
+        return this.<M>read(query).stream()
+                                  .findAny()
+                                  .orElse(defaultInstance);
+    }
+
+    <M extends Message> Collection<M> read(Query query) {
         final QueryResponse response = queryService.read(query);
-        final M result = response.getMessagesList()
-                                 .stream()
-                                 .map(AnyPacker::<M>unpack)
-                                 .findAny()
-                                 .orElse(defaultInstance);
+        final Collection<M> result = response.getMessagesList()
+                                             .stream()
+                                             .map(AnyPacker::<M>unpack)
+                                             .collect(toList());
         return result;
     }
 

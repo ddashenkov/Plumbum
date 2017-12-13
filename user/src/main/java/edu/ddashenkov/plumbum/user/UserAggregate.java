@@ -17,6 +17,7 @@ public class UserAggregate extends Aggregate<UserId, User, UserVBuilder> {
         final UserCreated event = UserCreated.newBuilder()
                                              .setUserId(command.getUserId())
                                              .setName(command.getName())
+                                             .setPassword(command.getPassword())
                                              .build();
         return event;
     }
@@ -34,7 +35,8 @@ public class UserAggregate extends Aggregate<UserId, User, UserVBuilder> {
     private void on(UserCreated event) {
         getBuilder()
                 .setId(event.getUserId())
-                .setName(event.getName());
+                .setName(event.getName())
+                .setPassword(event.getPassword());
     }
 
     @Apply
