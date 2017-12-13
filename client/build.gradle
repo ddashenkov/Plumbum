@@ -1,4 +1,9 @@
 
 dependencies {
-    compile project(path: ':common')
+    compile project(path: ':model')
+}
+
+task fatJar(type: Jar) {
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    baseName = project.name + '-all'
 }

@@ -1,5 +1,6 @@
 rootProject.name = 'plumbum'
 include 'common'
+include 'model'
 include 'user'
 include 'record'
 include 'web-adapter'
