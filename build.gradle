@@ -85,4 +85,8 @@ allprojects {
             }
         }
     }
+
+    configurations.all {
+        it.exclude(module: 'com.google.protobuf.nano')
+    }
 }

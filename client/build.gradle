@@ -6,4 +6,5 @@ dependencies {
 task fatJar(type: Jar) {
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     baseName = project.name + '-all'
+    with jar
 }

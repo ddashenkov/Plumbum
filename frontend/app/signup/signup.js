@@ -15,12 +15,8 @@ app.controller('SignUpCtrl', function ($scope, $http, BACKEND_DOMAIN) {
         password: ''
     };
     $scope.trySignUp = function () {
-        const name = "name=" + $scope.credentials.name;
-        document.cookie = name;
-        const pass = "password=" + $scope.credentials.password;
-        document.cookie = pass;
-        console.log(name);
-        console.log(pass);
+        document.cookie = "name=" + $scope.credentials.name;
+        document.cookie = "password=" + $scope.credentials.password;
         $http.get(BACKEND_DOMAIN + '/signup')
             .then(function (response) {
                 console.log(response.data)

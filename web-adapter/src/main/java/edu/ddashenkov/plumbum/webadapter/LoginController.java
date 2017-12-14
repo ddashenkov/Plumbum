@@ -10,6 +10,8 @@ import io.spine.people.PersonName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 import static com.google.common.base.Preconditions.checkState;
 import static io.spine.core.Status.StatusCase.OK;
 import static spark.Spark.get;
@@ -46,12 +48,16 @@ final class LoginController implements Controller {
         get("/login", (request, response) -> {
             final String name = Cookie.USERNAME.get(request);
             final String password = Cookie.PASSWORD.get(request);
-            final String userId = client.checkUser(name, password)
-                                        .map(UserId::getValue)
-                                        .orElse("");
-            log().info("Log in User {}", userId);
-            Cookie.USER_ID.set(response, userId);
-            return userId;
+            final Optional<String> userId = client.checkUser(name, password)
+                                                  .map(UserId::getValue);
+            if (userId.isPresent()) {
+                log().info("Log in User {}", userId);
+                Cookie.USER_ID.set(response, userId.get());
+                return userId;
+            } else {
+                response.status(401);
+                return "";
+            }
         }, toJson());
     }
 

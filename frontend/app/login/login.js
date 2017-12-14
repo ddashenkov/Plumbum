@@ -16,6 +16,8 @@ angular.module('myApp.login', ['ngRoute'])
     };
 
     $scope.tryLogin = function() {
+        document.cookie = "name=" + $scope.credentials.name;
+        document.cookie = "password=" + $scope.credentials.password;
         $http.get(BACKEND_DOMAIN + '/login').then(function() {
             $window.location.href = '#!/records';
         });
