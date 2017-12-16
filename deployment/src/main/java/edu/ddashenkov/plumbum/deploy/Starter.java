@@ -6,7 +6,10 @@ import edu.ddashenkov.plumbum.deploy.endpoint.RecordEndpoint;
 
 import java.util.stream.Stream;
 
+import static java.lang.Integer.parseInt;
+import static java.lang.System.getenv;
 import static spark.Spark.before;
+import static spark.Spark.port;
 
 final class Starter {
 
@@ -17,6 +20,8 @@ final class Starter {
     }
 
     public static void main(String[] args) {
+        final int port = parseInt(getenv().get("PORT"));
+        port(port);
         enableCORS();
         Stream.of(LoginEndpoint.create(),
                   RecordEndpoint.create())
