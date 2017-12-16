@@ -18,7 +18,8 @@ import static spark.Spark.get;
 
 final class LoginController implements Controller {
 
-    private final AnonymousClient client = AnonymousClient.instance(Channels.getDefault());
+    private final AnonymousClient client = AnonymousClient.instance(
+            Channels.forHostPort("guarded-badlands-19791.herokuapp.com", 50051));
 
     private LoginController() {
         // Prevent direct instantiation.
