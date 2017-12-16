@@ -10,6 +10,6 @@ repositories {
 }
 
 dependencies {
-    compile project(path: ':common')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(':model')
+    compile "io.spine:spine-server:$spineVersion"
 }

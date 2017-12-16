@@ -1,8 +1,7 @@
-package edu.ddashenkov.plumbum.client;
+package edu.ddashenkov.plumbum.webadapter;
 
 import edu.ddashenkov.plumbum.user.CreateUser;
 import edu.ddashenkov.plumbum.user.User;
-import io.grpc.Channel;
 import io.spine.client.Query;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
@@ -15,12 +14,8 @@ public final class AnonymousClient extends AbstractClient {
                                                   .setValue("-")
                                                   .build();
 
-    private AnonymousClient(Channel channel) {
-        super(channel, ANONYMOUS);
-    }
-
-    public static AnonymousClient instance(Channel channel) {
-        return new AnonymousClient(channel);
+    private AnonymousClient() {
+        super(ANONYMOUS);
     }
 
     public Ack createUser(CreateUser command) {
@@ -39,5 +34,15 @@ public final class AnonymousClient extends AbstractClient {
                                                              .filter(user -> user.getPassword()
                                                                                  .equals(password));
         return profile.map(User::getId);
+    }
+
+    public static AnonymousClient instance() {
+        return Singleton.INSTANCE.value;
+    }
+
+    private enum Singleton {
+        INSTANCE;
+        @SuppressWarnings("NonSerializableFieldInSerializableClass")
+        private final AnonymousClient value = new AnonymousClient();
     }
 }

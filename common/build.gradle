@@ -1,6 +1,0 @@
-dependencies {
-    compile project(":model")
-
-    compile group: 'io.spine', name: 'jdbc-rdbms', version: spineJdbcVersion
-    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
-}

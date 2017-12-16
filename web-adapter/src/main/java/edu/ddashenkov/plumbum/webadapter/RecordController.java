@@ -1,14 +1,12 @@
 package edu.ddashenkov.plumbum.webadapter;
 
-import edu.ddashenkov.plumbum.client.Channels;
-import edu.ddashenkov.plumbum.client.PlumbumClient;
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
 import io.spine.core.UserId;
 import spark.Request;
 
-import static edu.ddashenkov.plumbum.client.PlumbumClient.instance;
+import static edu.ddashenkov.plumbum.webadapter.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
 import static spark.Spark.get;
 
@@ -44,7 +42,7 @@ final class RecordController implements Controller {
         final UserId user = UserId.newBuilder()
                                   .setValue(userId)
                                   .build();
-        return instance(Channels.getDefault(), user);
+        return instance(user);
     }
 
     private static RecordId recordId(long value) {

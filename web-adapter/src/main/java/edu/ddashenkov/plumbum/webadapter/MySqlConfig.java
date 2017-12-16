@@ -1,4 +1,4 @@
-package edu.ddashenkov.plumbum.config;
+package edu.ddashenkov.plumbum.webadapter;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.spine.server.storage.StorageFactory;

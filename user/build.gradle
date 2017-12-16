@@ -5,11 +5,7 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compile project(path: ':common')
+    compile project(':model')
     compile "io.spine:spine-server:$spineVersion"
 }

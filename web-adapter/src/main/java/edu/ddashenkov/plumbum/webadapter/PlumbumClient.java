@@ -1,4 +1,4 @@
-package edu.ddashenkov.plumbum.client;
+package edu.ddashenkov.plumbum.webadapter;
 
 import edu.ddashenkov.plumbum.record.AppendText;
 import edu.ddashenkov.plumbum.record.CreateRecord;
@@ -8,7 +8,6 @@ import edu.ddashenkov.plumbum.record.RecordList;
 import edu.ddashenkov.plumbum.record.SetRecordName;
 import edu.ddashenkov.plumbum.user.ChangeUserName;
 import edu.ddashenkov.plumbum.user.User;
-import io.grpc.Channel;
 import io.spine.client.Query;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
@@ -19,12 +18,12 @@ import static java.util.Collections.singleton;
 
 public final class PlumbumClient extends AbstractClient {
 
-    private PlumbumClient(Channel channel, UserId currentUser) {
-        super(channel, currentUser);
+    private PlumbumClient(UserId currentUser) {
+        super(currentUser);
     }
 
-    public static PlumbumClient instance(Channel channel, UserId user) {
-        return new PlumbumClient(channel, user);
+    public static PlumbumClient instance(UserId user) {
+        return new PlumbumClient(user);
     }
 
     public Ack renameUser(ChangeUserName command) {

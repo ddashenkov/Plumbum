@@ -1,7 +1,6 @@
 package edu.ddashenkov.plumbum.webadapter;
 
-import edu.ddashenkov.plumbum.client.AnonymousClient;
-import edu.ddashenkov.plumbum.client.Channels;
+import com.google.common.base.Throwables;
 import edu.ddashenkov.plumbum.user.CreateUser;
 import io.spine.Identifier;
 import io.spine.core.Ack;
@@ -14,12 +13,12 @@ import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkState;
 import static io.spine.core.Status.StatusCase.OK;
+import static spark.Spark.exception;
 import static spark.Spark.get;
 
 final class LoginController implements Controller {
 
-    private final AnonymousClient client = AnonymousClient.instance(
-            Channels.forHostPort("guarded-badlands-19791.herokuapp.com", 50051));
+    private final AnonymousClient client = AnonymousClient.instance();
 
     private LoginController() {
         // Prevent direct instantiation.
@@ -60,6 +59,11 @@ final class LoginController implements Controller {
                 return "";
             }
         }, toJson());
+
+        exception(Exception.class, (e, request, response) -> {
+            response.status(500);
+            response.body("{ 'error': '"  + Throwables.getStackTraceAsString(e) + "' }");
+        });
     }
 
     private static UserId newUser() {

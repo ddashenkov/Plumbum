@@ -1,4 +1,4 @@
-package edu.ddashenkov.plumbum.config;
+package edu.ddashenkov.plumbum.webadapter;
 
 import io.spine.core.BoundedContextName;
 import io.spine.server.BoundedContext;
