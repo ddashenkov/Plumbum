@@ -1,16 +1,19 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy;
 
 import edu.ddashenkov.plumbum.record.RecordRepository;
 import edu.ddashenkov.plumbum.record.RecordsListRepository;
 import edu.ddashenkov.plumbum.user.UserRepository;
+import io.spine.core.BoundedContextName;
 import io.spine.server.BoundedContext;
 import io.spine.server.CommandService;
 import io.spine.server.QueryService;
 import io.spine.server.entity.Repository;
+import io.spine.server.storage.StorageFactory;
+import io.spine.server.storage.memory.InMemoryStorageFactory;
 
-import static edu.ddashenkov.plumbum.webadapter.BoundedContexts.newBoundedContext;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-final class Backend {
+public final class Backend {
 
     private static final String USERS = "Users";
     private static final String RECORDS = "Records";
@@ -54,15 +57,30 @@ final class Backend {
         return recordsRc;
     }
 
-    QueryService getQueryService() {
+    private static BoundedContext newBoundedContext(String name, Repository<?, ?>... repositories) {
+        checkNotNull(name);
+        checkNotNull(repositories);
+        final BoundedContextName contextName = BoundedContext.newName(name);
+        final StorageFactory storageFactory = InMemoryStorageFactory.newInstance(contextName, false);
+        final BoundedContext bc = BoundedContext.newBuilder()
+                                                .setName(name)
+                                                .setStorageFactorySupplier(() -> storageFactory)
+                                                .build();
+        for (Repository<?, ?> repo : repositories) {
+            bc.register(repo);
+        }
+        return bc;
+    }
+
+    public QueryService getQueryService() {
         return queryService;
     }
 
-    CommandService getCommandService() {
+    public CommandService getCommandService() {
         return commandService;
     }
 
-    static Backend instance() {
+    public static Backend instance() {
         return Singleton.INSTANCE.value;
     }
 

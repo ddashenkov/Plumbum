@@ -1,16 +1,12 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.client;
 
 import io.grpc.stub.StreamObserver;
 import io.spine.grpc.MemoizingObserver;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static io.spine.grpc.StreamObservers.memoizingObserver;
 
-/**
- * @author Dmytro Dashenkov
- */
 final class BlockingObserver<T> implements StreamObserver<T> {
 
     private final CompletableFuture<Void> future = new CompletableFuture<>();
@@ -45,11 +41,6 @@ final class BlockingObserver<T> implements StreamObserver<T> {
     T getSingleValue() {
         await();
         return memoizingObserver.firstResponse();
-    }
-
-    List<T> getValues() {
-        await();
-        return memoizingObserver.responses();
     }
 
     private void await() {

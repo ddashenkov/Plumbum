@@ -1,4 +1,4 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.config;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.spine.server.storage.StorageFactory;
@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-final class MySqlConfig {
+public final class MySqlConfig {
 
     private static MysqlDataSource dataSource;
 
@@ -33,7 +33,7 @@ final class MySqlConfig {
         // Prevent utility class instantiation.
     }
 
-    static StorageFactory storageFactory() {
+    public static StorageFactory storageFactory() {
         final StorageFactory factory = JdbcStorageFactory.newBuilder()
                                                          .setDataSource(dataSource)
                                                          .build();

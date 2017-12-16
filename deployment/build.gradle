@@ -28,7 +28,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'edu.ddashenkov.plumbum.webadapter.Starter'
+        attributes 'Main-Class': 'edu.ddashenkov.plumbum.deploy.Starter'
     }
 }
 

@@ -1,25 +1,26 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.endpoint;
 
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
+import edu.ddashenkov.plumbum.deploy.client.PlumbumClient;
 import io.spine.core.UserId;
 import spark.Request;
 
-import static edu.ddashenkov.plumbum.webadapter.PlumbumClient.instance;
+import static edu.ddashenkov.plumbum.deploy.client.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
 import static spark.Spark.get;
 
-final class RecordController implements Controller {
+public final class RecordEndpoint implements Endpoint {
 
     private static final String ID_PARAM = ":id";
 
-    private RecordController() {
+    private RecordEndpoint() {
         // Prevent direct instantiation.
     }
 
-    static Controller create() {
-        return new RecordController();
+    public static Endpoint create() {
+        return new RecordEndpoint();
     }
 
     @Override

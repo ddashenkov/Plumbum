@@ -1,4 +1,4 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.endpoint;
 
 import spark.Request;
 

@@ -2,5 +2,5 @@ rootProject.name = 'plumbum'
 include 'model'
 include 'user'
 include 'record'
-include 'web-adapter'
+include 'deployment'
 

@@ -1,7 +1,8 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.endpoint;
 
 import com.google.common.base.Throwables;
 import edu.ddashenkov.plumbum.user.CreateUser;
+import edu.ddashenkov.plumbum.deploy.client.AnonymousClient;
 import io.spine.Identifier;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
@@ -16,16 +17,16 @@ import static io.spine.core.Status.StatusCase.OK;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 
-final class LoginController implements Controller {
+public final class LoginEndpoint implements Endpoint {
 
     private final AnonymousClient client = AnonymousClient.instance();
 
-    private LoginController() {
+    private LoginEndpoint() {
         // Prevent direct instantiation.
     }
 
-    static Controller create() {
-        return new LoginController();
+    public static Endpoint create() {
+        return new LoginEndpoint();
     }
 
     @Override
@@ -85,6 +86,6 @@ final class LoginController implements Controller {
     private enum LogSingleton {
         INSTANCE;
         @SuppressWarnings("NonSerializableFieldInSerializableClass")
-        private final Logger value = LoggerFactory.getLogger(LoginController.class);
+        private final Logger value = LoggerFactory.getLogger(LoginEndpoint.class);
     }
 }

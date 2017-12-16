@@ -1,4 +1,4 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.client;
 
 import edu.ddashenkov.plumbum.user.CreateUser;
 import edu.ddashenkov.plumbum.user.User;

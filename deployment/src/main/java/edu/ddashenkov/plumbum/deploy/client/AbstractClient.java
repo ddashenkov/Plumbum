@@ -1,6 +1,7 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy.client;
 
 import com.google.protobuf.Message;
+import edu.ddashenkov.plumbum.deploy.Backend;
 import io.spine.client.ActorRequestFactory;
 import io.spine.client.Query;
 import io.spine.client.QueryResponse;

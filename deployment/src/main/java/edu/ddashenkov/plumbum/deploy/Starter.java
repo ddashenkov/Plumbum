@@ -1,4 +1,8 @@
-package edu.ddashenkov.plumbum.webadapter;
+package edu.ddashenkov.plumbum.deploy;
+
+import edu.ddashenkov.plumbum.deploy.endpoint.Endpoint;
+import edu.ddashenkov.plumbum.deploy.endpoint.LoginEndpoint;
+import edu.ddashenkov.plumbum.deploy.endpoint.RecordEndpoint;
 
 import java.util.stream.Stream;
 
@@ -7,15 +11,17 @@ import static spark.Spark.options;
 
 final class Starter {
 
-    private Starter() {
-        // Prevent utility class instantiation.
-    }
+    /**
+     * The {@code private} constructor prevents the utility class instantiation.
+     */
+    private Starter() {}
+
 
     public static void main(String[] args) {
         enableCORS();
-        Stream.of(LoginController.create(),
-                  RecordController.create())
-              .forEach(Controller::serve);
+        Stream.of(LoginEndpoint.create(),
+                  RecordEndpoint.create())
+              .forEach(Endpoint::serve);
     }
 
     private static void enableCORS() {
