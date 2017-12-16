@@ -1,6 +1,33 @@
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
 dependencies {
     compile project(path: ':common')
     compile project(path: ':user')
     compile project(path: ':record')
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'edu.ddashenkov.plumbum.server.Starter'
+    }
+}
+
+shadowJar {
+    baseName = 'Plumbum'
+    classifier = null
+    version = null
+
+    configurations = [project.configurations.runtime]
+
+    append 'known_types.properties'
 }
