@@ -41,7 +41,7 @@ final class Starter {
         });
 
         before((request, response) -> {
-            final String frontend = "http://localhost:8000";
+            final String frontend = "*";
             response.header("Access-Control-Allow-Origin", frontend);
             response.header("Access-Control-Request-Method", frontend);
             response.header("Access-Control-Allow-Headers", frontend);

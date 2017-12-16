@@ -12,4 +12,4 @@ angular.module('myApp', [
     $locationProvider.hashPrefix('!');
     $httpProvider.defaults.withCredentials = true;
     $routeProvider.otherwise({redirectTo: '/login'});
-}]).constant("BACKEND_DOMAIN", "http://localhost:4567");
+}]).constant("BACKEND_DOMAIN", "https://guarded-badlands-19791.herokuapp.com/");
