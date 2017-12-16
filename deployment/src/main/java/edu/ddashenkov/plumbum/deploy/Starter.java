@@ -25,7 +25,7 @@ final class Starter {
 
     private static void enableCORS() {
         before((request, response) -> {
-            final String frontend = "*";
+            final String frontend = "obscure-lowlands-96477.herokuapp.com";
             response.header("Access-Control-Allow-Origin", frontend);
             response.header("Access-Control-Request-Method", frontend);
             response.header("Access-Control-Allow-Headers", frontend);
