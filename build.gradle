@@ -72,6 +72,11 @@ allprojects {
 
     protobuf {
         generatedFilesBaseDir = "$projectDir/generated"
+
+        protoc {
+            artifact = 'com.google.protobuf:protoc:3.3.0'
+        }
+
         generateProtoTasks {
             all().each { task ->
                 task.generateDescriptorSet = true
