@@ -13,8 +13,8 @@ final class Starter {
     /**
      * The {@code private} constructor prevents the utility class instantiation.
      */
-    private Starter() {}
-
+    private Starter() {
+    }
 
     public static void main(String[] args) {
         enableCORS();
