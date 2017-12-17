@@ -1,19 +1,31 @@
 package edu.ddashenkov.plumbum.deploy.endpoint;
 
+import edu.ddashenkov.plumbum.adapter.Points;
+import edu.ddashenkov.plumbum.deploy.client.PlumbumClient;
+import edu.ddashenkov.plumbum.record.AppendText;
+import edu.ddashenkov.plumbum.record.CreateRecord;
+import edu.ddashenkov.plumbum.record.Point;
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
-import edu.ddashenkov.plumbum.deploy.client.PlumbumClient;
 import io.spine.core.UserId;
+import io.spine.json.Json;
 import spark.Request;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 import static edu.ddashenkov.plumbum.deploy.client.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
 import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
 
 public final class RecordEndpoint implements Endpoint {
 
     private static final String ID_PARAM = ":id";
+    private static final DateTimeFormatter DEFAULT_NAME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm d MMM YYYY");
 
     private RecordEndpoint() {
         // Prevent direct instantiation.
@@ -30,12 +42,36 @@ public final class RecordEndpoint implements Endpoint {
             final RecordList records = client.getMyRecords();
             return records;
         }, toJson());
+
         get("/record/" + ID_PARAM, (request, response) -> {
             final PlumbumClient client = client(request);
             final long recordId = parseLong(request.params(ID_PARAM));
             final Record record = client.getRecord(recordId(recordId));
             return record;
         }, toJson());
+        put("/record/" + ID_PARAM, (request, response) -> {
+            final PlumbumClient client = client(request);
+            final long recordId = parseLong(request.params(ID_PARAM));
+            final LocalDateTime time = LocalDateTime.now();
+            final CreateRecord command = CreateRecord.newBuilder()
+                                                     .setId(recordId(recordId))
+                                                     .setDisplayName(time.format(DEFAULT_NAME_FORMATTER))
+                                                     .build();
+            client.createRecerd(command);
+            return "OK";
+        });
+        post("/record/" + ID_PARAM, (request, response) -> {
+            final PlumbumClient client = client(request);
+            final long recordId = parseLong(request.params(ID_PARAM));
+            final String body = request.body();
+            final Collection<Point> points = parse(body);
+            final AppendText command = AppendText.newBuilder()
+                                                 .setId(recordId(recordId))
+                                                 .addAllNewPoints(points)
+                                                 .build();
+            client.appendText(command);
+            return "OK";
+        });
     }
 
     private PlumbumClient client(Request request) {
@@ -50,5 +86,10 @@ public final class RecordEndpoint implements Endpoint {
         return RecordId.newBuilder()
                        .setUid(value)
                        .build();
+    }
+
+    private Collection<Point> parse(String requestBody) {
+        final Points points = Json.fromJson(requestBody, Points.class);
+        return points.getPointsList();
     }
 }
