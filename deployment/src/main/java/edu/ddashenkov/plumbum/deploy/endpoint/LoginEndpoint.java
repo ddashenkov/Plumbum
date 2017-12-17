@@ -43,7 +43,7 @@ public final class LoginEndpoint implements Endpoint {
                                                  .build();
             final Ack ack = client.createUser(command);
             checkState(ack.getStatus().getStatusCase() == OK);
-            return userId;
+            return userId.getValue();
         }, toJson());
         get("/login", (request, response) -> {
             final String name = Header.USERNAME.get(request);
@@ -52,7 +52,7 @@ public final class LoginEndpoint implements Endpoint {
                                                   .map(UserId::getValue);
             if (userId.isPresent()) {
                 log().info("Log in User {}", userId);
-                return userId;
+                return userId.get();
             } else {
                 response.status(401);
                 return "";
