@@ -66,17 +66,22 @@ public final class RecordEndpoint implements Endpoint {
             return "OK";
         });
         post("/record/" + ID_PARAM, (request, response) -> {
-            final PlumbumClient client = client(request);
-            final long recordId = parseLong(request.params(ID_PARAM));
-            log().info("Appending to record " + recordId);
-            final String body = request.body();
-            final Collection<Point> points = parse(body);
-            final AppendText command = AppendText.newBuilder()
-                                                 .setId(recordId(recordId))
-                                                 .addAllNewPoints(points)
-                                                 .build();
-            client.appendText(command);
-            return "OK";
+            try {
+                final PlumbumClient client = client(request);
+                final long recordId = parseLong(request.params(ID_PARAM));
+                log().info("Appending to record " + recordId);
+                final String body = request.body();
+                final Collection<Point> points = parse(body);
+                final AppendText command = AppendText.newBuilder()
+                                                     .setId(recordId(recordId))
+                                                     .addAllNewPoints(points)
+                                                     .build();
+                client.appendText(command);
+                return "OK";
+            } catch (RuntimeException e) {
+                log().error("Error", e);
+                throw e;
+            }
         });
     }
 
