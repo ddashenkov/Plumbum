@@ -1,6 +1,7 @@
 package edu.ddashenkov.plumbum.deploy.endpoint;
 
-import edu.ddashenkov.plumbum.adapter.Points;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import edu.ddashenkov.plumbum.deploy.client.PlumbumClient;
 import edu.ddashenkov.plumbum.record.AppendText;
 import edu.ddashenkov.plumbum.record.CreateRecord;
@@ -9,17 +10,19 @@ import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
 import io.spine.core.UserId;
-import io.spine.json.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 
 import static edu.ddashenkov.plumbum.deploy.client.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
+import static java.util.stream.Collectors.toList;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
@@ -99,9 +102,17 @@ public final class RecordEndpoint implements Endpoint {
                        .build();
     }
 
-    private Collection<Point> parse(String requestBody) {
-        final Points points = Json.fromJson(requestBody, Points.class);
-        return points.getPointsList();
+    private List<Point> parse(String requestBody) {
+        final Type type = new TypeToken<List<AdapterPoint>>() {}.getType();
+        final Gson gson = new Gson();
+        final List<AdapterPoint> adapterPoints = gson.fromJson(requestBody, type);
+        final List<Point> result = adapterPoints.stream()
+                                                .map(point -> Point.newBuilder()
+                                                                   .setX(point.x)
+                                                                   .setY(point.y)
+                                                                   .build())
+                                                .collect(toList());
+        return result;
     }
 
     private static Logger log() {
@@ -112,5 +123,11 @@ public final class RecordEndpoint implements Endpoint {
         INSTANCE;
         @SuppressWarnings("NonSerializableFieldInSerializableClass")
         private final Logger value = LoggerFactory.getLogger(RecordEndpoint.class);
+    }
+
+    private static final class AdapterPoint {
+
+        private float x;
+        private float y;
     }
 }
