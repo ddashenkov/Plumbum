@@ -10,6 +10,8 @@ import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
 import io.spine.core.UserId;
 import io.spine.json.Json;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Request;
 
 import java.time.LocalDateTime;
@@ -38,6 +40,7 @@ public final class RecordEndpoint implements Endpoint {
     @Override
     public void serve() {
         get("/records", (request, response) -> {
+            log().info("Fetching records");
             final PlumbumClient client = client(request);
             final RecordList records = client.getMyRecords();
             return records;
@@ -46,12 +49,14 @@ public final class RecordEndpoint implements Endpoint {
         get("/record/" + ID_PARAM, (request, response) -> {
             final PlumbumClient client = client(request);
             final long recordId = parseLong(request.params(ID_PARAM));
+            log().info("Fetching record " + recordId);
             final Record record = client.getRecord(recordId(recordId));
             return record;
         }, toJson());
         put("/record/" + ID_PARAM, (request, response) -> {
             final PlumbumClient client = client(request);
             final long recordId = parseLong(request.params(ID_PARAM));
+            log().info("Creating record " + recordId);
             final LocalDateTime time = LocalDateTime.now();
             final CreateRecord command = CreateRecord.newBuilder()
                                                      .setId(recordId(recordId))
@@ -63,6 +68,7 @@ public final class RecordEndpoint implements Endpoint {
         post("/record/" + ID_PARAM, (request, response) -> {
             final PlumbumClient client = client(request);
             final long recordId = parseLong(request.params(ID_PARAM));
+            log().info("Appending to record " + recordId);
             final String body = request.body();
             final Collection<Point> points = parse(body);
             final AppendText command = AppendText.newBuilder()
@@ -91,5 +97,15 @@ public final class RecordEndpoint implements Endpoint {
     private Collection<Point> parse(String requestBody) {
         final Points points = Json.fromJson(requestBody, Points.class);
         return points.getPointsList();
+    }
+
+    private static Logger log() {
+        return LogSingleton.INSTANCE.value;
+    }
+
+    private enum LogSingleton {
+        INSTANCE;
+        @SuppressWarnings("NonSerializableFieldInSerializableClass")
+        private final Logger value = LoggerFactory.getLogger(RecordEndpoint.class);
     }
 }
