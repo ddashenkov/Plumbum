@@ -57,17 +57,22 @@ public final class RecordEndpoint implements Endpoint {
             return record;
         }, toJson());
         put("/record/" + ID_PARAM, (request, response) -> {
-            final PlumbumClient client = client(request);
-            final long recordId = parseLong(request.params(ID_PARAM));
-            log().info("Creating record " + recordId);
-            final LocalDateTime time = LocalDateTime.now();
-            final CreateRecord command = CreateRecord.newBuilder()
-                                                     .setId(recordId(recordId))
-                                                     .setDisplayName(time.format(DEFAULT_NAME_FORMATTER))
-                                                     .build();
-            log().info("{}", command);
-            client.createRecord(command);
-            return "OK";
+            try {
+                final PlumbumClient client = client(request);
+                final long recordId = parseLong(request.params(ID_PARAM));
+                log().info("Creating record " + recordId);
+                final LocalDateTime time = LocalDateTime.now();
+                final CreateRecord command = CreateRecord.newBuilder()
+                                                         .setId(recordId(recordId))
+                                                         .setDisplayName(time.format(DEFAULT_NAME_FORMATTER))
+                                                         .build();
+                log().info("{}", command);
+                client.createRecord(command);
+                return "OK";
+            } catch (RuntimeException e) {
+                log().error("Error", e);
+                throw e;
+            }
         });
         post("/record/" + ID_PARAM, (request, response) -> {
             try {
