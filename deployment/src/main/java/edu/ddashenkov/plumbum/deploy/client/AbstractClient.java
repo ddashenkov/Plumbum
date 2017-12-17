@@ -68,4 +68,8 @@ abstract class AbstractClient {
     ActorRequestFactory requestFactory() {
         return requestFactory;
     }
+
+    protected final UserId getActor() {
+        return requestFactory.getActor();
+    }
 }

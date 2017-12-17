@@ -24,7 +24,9 @@ public final class PlumbumClient extends AbstractClient {
     }
 
     public Ack createRecord(CreateRecord command) {
-        return sendCommand(command);
+        return sendCommand(command.toBuilder()
+                                  .setUserId(getActor())
+                                  .build());
     }
 
     public Ack appendText(AppendText command) {
