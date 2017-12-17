@@ -62,7 +62,7 @@ public final class RecordEndpoint implements Endpoint {
                                                      .setId(recordId(recordId))
                                                      .setDisplayName(time.format(DEFAULT_NAME_FORMATTER))
                                                      .build();
-            client.createRecerd(command);
+            client.createRecord(command);
             return "OK";
         });
         post("/record/" + ID_PARAM, (request, response) -> {

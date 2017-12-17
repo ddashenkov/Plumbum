@@ -5,9 +5,6 @@ import edu.ddashenkov.plumbum.record.CreateRecord;
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
-import edu.ddashenkov.plumbum.record.SetRecordName;
-import edu.ddashenkov.plumbum.user.ChangeUserName;
-import edu.ddashenkov.plumbum.user.User;
 import io.spine.client.Query;
 import io.spine.core.Ack;
 import io.spine.core.UserId;
@@ -26,23 +23,11 @@ public final class PlumbumClient extends AbstractClient {
         return new PlumbumClient(user);
     }
 
-    public Ack renameUser(ChangeUserName command) {
-        return sendCommand(command);
-    }
-
-    public User getUser(UserId id) {
-        return read(User.class, id);
-    }
-
-    public Ack createRecerd(CreateRecord command) {
+    public Ack createRecord(CreateRecord command) {
         return sendCommand(command);
     }
 
     public Ack appendText(AppendText command) {
-        return sendCommand(command);
-    }
-
-    public Ack renameRecord(SetRecordName command) {
         return sendCommand(command);
     }
 
