@@ -3,6 +3,8 @@ package edu.ddashenkov.plumbum.record;
 import io.spine.server.aggregate.Aggregate;
 import io.spine.server.aggregate.Apply;
 import io.spine.server.command.Assign;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Dmytro Dashenkov
@@ -16,6 +18,7 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
 
     @Assign
     RecordCreated handle(CreateRecord command) {
+        log().info("CreateRecord {}", command);
         final RecordCreated event = RecordCreated.newBuilder()
                                                  .setId(command.getId())
                                                  .setUserId(command.getUserId())
@@ -26,6 +29,7 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
 
     @Assign
     TextAppended handle(AppendText command) {
+        log().info("AppendText {}", command);
         final TextAppended event = TextAppended.newBuilder()
                                                .setId(command.getId())
                                                .addAllNewPoints(command.getNewPointsList())
@@ -35,6 +39,7 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
 
     @Assign
     RecordNameChanged handle(SetRecordName command) {
+        log().info("SetRecordName {}", command);
         final RecordNameChanged event = RecordNameChanged.newBuilder()
                                                          .setId(command.getId())
                                                          .setNewName(command.getNewName())
@@ -44,6 +49,7 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
 
     @Apply
     private void on(RecordCreated event) {
+        log().info("RecordCreated {}", event);
         getBuilder().setId(event.getId())
                     .setUserId(event.getUserId())
                     .setDisplayName(event.getDisplayName());
@@ -51,11 +57,22 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
 
     @Apply
     private void on(TextAppended event) {
+        log().info("TextAppended {}", event);
         getBuilder().addAllPoints(event.getNewPointsList());
     }
 
     @Apply
     private void on(RecordNameChanged event) {
         getBuilder().setDisplayName(event.getNewName());
+    }
+
+    private static Logger log() {
+        return LogSingleton.INSTANCE.value;
+    }
+
+    private enum LogSingleton {
+        INSTANCE;
+        @SuppressWarnings("NonSerializableFieldInSerializableClass")
+        private final Logger value = LoggerFactory.getLogger(RecordAggregate.class);
     }
 }
