@@ -33,8 +33,8 @@ public final class LoginEndpoint implements Endpoint {
     public void serve() {
         get("/signup", (request, response) -> {
             final UserId userId = newUser();
-            final String name = Cookie.USERNAME.get(request);
-            final String password = Cookie.PASSWORD.get(request);
+            final String name = Header.USERNAME.get(request);
+            final String password = Header.PASSWORD.get(request);
             log().info("Sign up User {} (password: {}). Assigned ID {}.", name, password, userId);
             final CreateUser command = CreateUser.newBuilder()
                                                  .setUserId(userId)
@@ -43,17 +43,15 @@ public final class LoginEndpoint implements Endpoint {
                                                  .build();
             final Ack ack = client.createUser(command);
             checkState(ack.getStatus().getStatusCase() == OK);
-            Cookie.USER_ID.set(response, userId.getValue());
             return userId;
         }, toJson());
         get("/login", (request, response) -> {
-            final String name = Cookie.USERNAME.get(request);
-            final String password = Cookie.PASSWORD.get(request);
+            final String name = Header.USERNAME.get(request);
+            final String password = Header.PASSWORD.get(request);
             final Optional<String> userId = client.checkUser(name, password)
                                                   .map(UserId::getValue);
             if (userId.isPresent()) {
                 log().info("Log in User {}", userId);
-                Cookie.USER_ID.set(response, userId.get());
                 return userId;
             } else {
                 response.status(401);

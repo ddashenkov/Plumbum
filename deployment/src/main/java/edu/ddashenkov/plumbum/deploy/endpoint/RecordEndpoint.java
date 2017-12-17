@@ -39,7 +39,7 @@ public final class RecordEndpoint implements Endpoint {
     }
 
     private PlumbumClient client(Request request) {
-        final String userId = Cookie.USER_ID.get(request);
+        final String userId = Header.USER_ID.get(request);
         final UserId user = UserId.newBuilder()
                                   .setValue(userId)
                                   .build();

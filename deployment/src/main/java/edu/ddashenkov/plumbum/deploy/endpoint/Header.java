@@ -1,19 +1,18 @@
 package edu.ddashenkov.plumbum.deploy.endpoint;
 
 import spark.Request;
-import spark.Response;
 
 /**
  * @author Dmytro Dashenkov
  */
-enum Cookie implements RequestProperty {
+enum Header implements RequestProperty {
     USER_ID("userId"),
-    USERNAME("name"),
+    USERNAME("username"),
     PASSWORD("password");
 
     private final String name;
 
-    Cookie(String name) {
+    Header(String name) {
         this.name = name;
     }
 
@@ -24,11 +23,6 @@ enum Cookie implements RequestProperty {
 
     @Override
     public String get(Request request) {
-        return request.cookies()
-                      .get(getName());
-    }
-
-    public void set(Response response, String value) {
-        response.cookie(getName(), value);
+        return request.headers(getName());
     }
 }
