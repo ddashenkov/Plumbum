@@ -51,8 +51,9 @@ public final class LoginEndpoint implements Endpoint {
             final Optional<String> userId = client.checkUser(name, password)
                                                   .map(UserId::getValue);
             if (userId.isPresent()) {
-                log().info("Log in User {}", userId);
-                return userId.get();
+                final String uid = userId.get();
+                log().info("Log in User {}", uid);
+                return uid;
             } else {
                 response.status(401);
                 return "";
