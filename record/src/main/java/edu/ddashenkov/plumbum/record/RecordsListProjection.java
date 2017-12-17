@@ -1,9 +1,11 @@
 package edu.ddashenkov.plumbum.record;
 
+import com.google.protobuf.Timestamp;
 import edu.ddashenkov.plumbum.user.UserCreated;
 import io.spine.core.Subscribe;
 import io.spine.core.UserId;
 import io.spine.server.projection.Projection;
+import io.spine.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +29,12 @@ public class RecordsListProjection extends Projection<UserId, RecordList, Record
     @Subscribe
     public void on(RecordCreated event) {
         log().info("RecordCreated {}", event);
+        final Timestamp timestamp = Time.getCurrentTime();
         final Record record = Record.newBuilder()
                                     .setId(event.getId())
                                     .setUserId(event.getUserId())
                                     .setDisplayName(event.getDisplayName())
+                                    .setTimestamp(timestamp)
                                     .build();
         getBuilder().setUserId(event.getUserId())
                     .addRecords(record);
