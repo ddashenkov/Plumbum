@@ -65,6 +65,7 @@ public final class RecordEndpoint implements Endpoint {
                                                      .setId(recordId(recordId))
                                                      .setDisplayName(time.format(DEFAULT_NAME_FORMATTER))
                                                      .build();
+            log().info("{}", command);
             client.createRecord(command);
             return "OK";
         });
@@ -79,6 +80,7 @@ public final class RecordEndpoint implements Endpoint {
                                                      .setId(recordId(recordId))
                                                      .addAllNewPoints(points)
                                                      .build();
+                log().info("{}", command);
                 client.appendText(command);
                 return "OK";
             } catch (RuntimeException e) {
