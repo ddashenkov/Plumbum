@@ -32,8 +32,8 @@ final class Starter {
         before((request, response) -> {
             final String frontend = "https://obscure-lowlands-96477.herokuapp.com";
             response.header("Access-Control-Allow-Origin", frontend);
-            response.header("Access-Control-Request-Method", frontend);
-            response.header("Access-Control-Allow-Headers", frontend);
+            response.header("Access-Control-Request-Method", "*");
+            response.header("Access-Control-Allow-Headers", "*");
             response.header("Access-Control-Allow-Credentials", "true");
             response.type("application/json");
         });
