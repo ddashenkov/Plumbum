@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static edu.ddashenkov.plumbum.deploy.client.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
 import static java.util.stream.Collectors.toList;
@@ -30,6 +31,7 @@ import static spark.Spark.put;
 public final class RecordEndpoint implements Endpoint {
 
     private static final String ID_PARAM = ":id";
+    private static final String RECROD_NAME_PARAM = "name";
     private static final DateTimeFormatter DEFAULT_NAME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm d MMM YYYY");
 
     private RecordEndpoint() {
@@ -58,13 +60,17 @@ public final class RecordEndpoint implements Endpoint {
         }, toJson());
         put("/record/" + ID_PARAM, (request, response) -> {
             try {
+                String recordName = request.queryParams(RECROD_NAME_PARAM);
+                if (isNullOrEmpty(recordName)) {
+                    final LocalDateTime time = LocalDateTime.now();
+                    recordName = time.format(DEFAULT_NAME_FORMATTER);
+                }
                 final PlumbumClient client = client(request);
                 final long recordId = parseLong(request.params(ID_PARAM));
                 log().info("Creating record " + recordId);
-                final LocalDateTime time = LocalDateTime.now();
                 final CreateRecord command = CreateRecord.newBuilder()
                                                          .setId(recordId(recordId))
-                                                         .setDisplayName(time.format(DEFAULT_NAME_FORMATTER))
+                                                         .setDisplayName(recordName)
                                                          .build();
                 log().info("{}", command);
                 client.createRecord(command);
