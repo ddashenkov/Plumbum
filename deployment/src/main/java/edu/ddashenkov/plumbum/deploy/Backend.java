@@ -1,16 +1,18 @@
 package edu.ddashenkov.plumbum.deploy;
 
-import edu.ddashenkov.plumbum.deploy.config.HerokuPostgresConfig;
 import edu.ddashenkov.plumbum.record.RecordRepository;
 import edu.ddashenkov.plumbum.record.RecordsListRepository;
 import edu.ddashenkov.plumbum.user.UserRepository;
+import io.spine.core.BoundedContextName;
 import io.spine.server.BoundedContext;
 import io.spine.server.CommandService;
 import io.spine.server.QueryService;
 import io.spine.server.entity.Repository;
 import io.spine.server.storage.StorageFactory;
+import io.spine.server.storage.memory.InMemoryStorageFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.spine.server.BoundedContext.newName;
 
 public final class Backend {
 
@@ -59,7 +61,8 @@ public final class Backend {
     private static BoundedContext newBoundedContext(String name, Repository<?, ?>... repositories) {
         checkNotNull(name);
         checkNotNull(repositories);
-        final StorageFactory storageFactory = HerokuPostgresConfig.storageFactory();
+        final BoundedContextName contextName = newName(name);
+        final StorageFactory storageFactory = InMemoryStorageFactory.newInstance(contextName, false);
         final BoundedContext bc = BoundedContext.newBuilder()
                                                 .setName(name)
                                                 .setStorageFactorySupplier(() -> storageFactory)
