@@ -35,3 +35,8 @@ message SetRecordName {
 
     string new_name = 2 [(required) = true];
 }
+
+message DeleteRecord {
+
+    record.RecordId id = 1 [(required) = true, (valid) = true];
+}

@@ -35,3 +35,8 @@ message RecordNameChanged {
 
     string new_name = 2 [(required) = true];
 }
+
+message RecordDeleted {
+
+    record.RecordId id = 1 [(required) = true, (valid) = true];
+}

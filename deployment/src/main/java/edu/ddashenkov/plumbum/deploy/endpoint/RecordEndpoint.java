@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import edu.ddashenkov.plumbum.deploy.client.PlumbumClient;
 import edu.ddashenkov.plumbum.record.AppendText;
 import edu.ddashenkov.plumbum.record.CreateRecord;
+import edu.ddashenkov.plumbum.record.DeleteRecord;
 import edu.ddashenkov.plumbum.record.Point;
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
@@ -24,6 +25,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static edu.ddashenkov.plumbum.deploy.client.PlumbumClient.instance;
 import static java.lang.Long.parseLong;
 import static java.util.stream.Collectors.toList;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
@@ -99,6 +101,22 @@ public final class RecordEndpoint implements Endpoint {
                 throw e;
             }
         });
+        delete("/record/" + ID_PARAM, (request, response) -> {
+            try {
+                final PlumbumClient client = client(request);
+                final long recordId = parseLong(request.params(ID_PARAM));
+                log().info("Deleting record " + recordId);
+                final DeleteRecord command = DeleteRecord.newBuilder()
+                                                       .setId(recordId(recordId))
+                                                       .build();
+                log().info("{}", command);
+                client.deleteRecord(command);
+                return "OK";
+            } catch (RuntimeException e) {
+                log().error("Error", e);
+                throw e;
+            }
+        }, toJson());
     }
 
     private PlumbumClient client(Request request) {

@@ -2,6 +2,7 @@ package edu.ddashenkov.plumbum.deploy.client;
 
 import edu.ddashenkov.plumbum.record.AppendText;
 import edu.ddashenkov.plumbum.record.CreateRecord;
+import edu.ddashenkov.plumbum.record.DeleteRecord;
 import edu.ddashenkov.plumbum.record.Record;
 import edu.ddashenkov.plumbum.record.RecordId;
 import edu.ddashenkov.plumbum.record.RecordList;
@@ -30,6 +31,10 @@ public final class PlumbumClient extends AbstractClient {
     }
 
     public Ack appendText(AppendText command) {
+        return sendCommand(command);
+    }
+
+    public Ack deleteRecord(DeleteRecord command) {
         return sendCommand(command);
     }
 

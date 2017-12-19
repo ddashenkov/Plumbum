@@ -47,6 +47,15 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
         return event;
     }
 
+    @Assign
+    RecordDeleted handle(DeleteRecord command) {
+        log().info("DeleteRecord {}", command);
+        final RecordDeleted event = RecordDeleted.newBuilder()
+                                                 .setId(getId())
+                                                 .build();
+        return event;
+    }
+
     @Apply
     private void on(RecordCreated event) {
         log().info("RecordCreated {}", event);
@@ -64,6 +73,11 @@ public class RecordAggregate extends Aggregate<RecordId, Record, RecordVBuilder>
     @Apply
     private void on(RecordNameChanged event) {
         getBuilder().setDisplayName(event.getNewName());
+    }
+
+    @Apply
+    private void on(RecordDeleted event) {
+        setDeleted(true);
     }
 
     private static Logger log() {

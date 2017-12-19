@@ -63,6 +63,12 @@ public class RecordsListProjection extends Projection<UserId, RecordList, Record
         getBuilder().setRecords(index, newRecord);
     }
 
+    @Subscribe
+    public void on(RecordDeleted event) {
+        getState().getRecordsList().removeIf(record -> record.getId().equals(event.getId()));
+    }
+
+
     private static Logger log() {
         return LogSingleton.INSTANCE.value;
     }
