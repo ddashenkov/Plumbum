@@ -24,7 +24,7 @@ public final class HerokuPostgresConfig {
         dataSource.setDatabaseName("dd749jf1trjnqu");
         dataSource.setUser("wrueucyquwohzk");
         dataSource.setPassword("6a13ae2fd05cb8e4e263a4c21e3d05c3c78ee45fca3aaa69b2ca0808e1f43ca8");
-        dataSource.setUrl("ec2-54-235-244-185.compute-1.amazonaws.com:5432");
+        dataSource.setUrl("ec2-54-235-244-185.compute-1.amazonaws.com");
         dataSource.setPortNumber(5432);
         dataSource.setSsl(true);
         return dataSource;
