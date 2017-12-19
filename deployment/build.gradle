@@ -22,8 +22,9 @@ dependencies {
     compile "io.spine:jdbc-rdbms:$spineJdbcVersion"
     compile "io.spine:spine-client:$spineVersion"
 
-    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
     compile "com.sparkjava:spark-core:2.6.0"
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+
 }
 
 jar {
