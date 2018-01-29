@@ -40,3 +40,5 @@ message RecordDeleted {
 
     record.RecordId id = 1 [(required) = true, (valid) = true];
 }
+
+// Dummy change.
